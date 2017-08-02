@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="../../../css/mui.css" rel="stylesheet" />
+
+	</head>
+
+	<body>
+
+		<div id="App">
+			<header-back :title='article.title'></header-back>
+			<div class="mui-content" v-html="article.content">
+            {{article.content}}
+			</div>
+		</div>
+
+		<script src="../../../js/mui.min.js"></script>
+		<script type="text/javascript" src="../../../js/vue.js"></script>
+		<script type="text/javascript" src="../../../templete/common.js"></script>
+		<script type="text/javascript" src="../../../js/kv.js"></script>
+		<script src="article.js"></script>
+	</body>
+
+</html>
