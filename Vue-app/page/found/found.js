@@ -1,6 +1,7 @@
 var found = new Vue({
 	el: '#App',
 	data: {
+		title:'发现',
 		articles: []
 	},
 	mounted: function() {

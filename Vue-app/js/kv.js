@@ -42,9 +42,9 @@ var kv = (function(mui) {
 	}
 
 	k.ajaxData = function(data, url, way, success, error) {
-		
+
 		var theurl = networkData.ip + url
-		
+
 		mui.ajax(theurl, {
 			data: data,
 			dataType: 'json',
@@ -65,14 +65,24 @@ var kv = (function(mui) {
 	}
 }(kv, mui));
 
-/*---------------------上拉加载，下拉刷新------------------*/
+/*---------------------上拉加载，下拉刷新，滚动区域------------------*/
 
 (function(k, mui) {
+
+	config = {
+		container: '#scroll'
+	}
+	k.beginScroll = function() {
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			indicators: false,
+		});
+	}
 
 	k.pullRefresh = function(ref) {
 		mui.init({
 			pullRefresh: {
-				container: "#App", //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				container: config.container, //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
 				down: {
 					height: 50, //可选,默认50.触发下拉刷新拖动距离,
 					auto: true, //可选,默认false.首次加载自动下拉刷新一次
@@ -88,7 +98,7 @@ var kv = (function(mui) {
 
 	k.endRefresh = function() {
 		setTimeout(function() {
-			mui('#App').pullRefresh().endPulldownToRefresh();
+			mui(config.container).pullRefresh().endPulldownToRefresh();
 		}, 250)
 	}
 
@@ -99,6 +109,7 @@ var kv = (function(mui) {
 	styles = {
 		popGesture: 'close',
 		statusbar: {
+			//状态栏颜色
 			background: '#f7f7f7'
 		},
 		scrollIndicator: 'none',
@@ -116,8 +127,8 @@ var kv = (function(mui) {
 			styles: styles,
 
 		})
-		
-		k.log('打开页面：'+url)
+
+		k.log('打开页面：' + url)
 	}
 
 }(kv, mui))

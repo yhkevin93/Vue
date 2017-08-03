@@ -10,19 +10,21 @@
 	</head>
 
 	<body>
-
-		<div class="mui-content" id="App">
-			<ul class="mui-table-view mui-table-view-chevron">
-				<li class="mui-table-view-cell mui-media common" id="id">
-					<a class="mui-navigate-right" href="#account">
-						<img class="lazy mui-media-object mui-pull-left head-img" :src="user.avatar_url">
-						<div class="mui-media-body">
-							<div id="name">{{user.loginname}}</div>
-							<p class='mui-ellipsis'>账号:{{user.githubUsername}}</p>
-						</div>
-					</a>
-				</li>
-			</ul>
+		<div id="App">
+			<header-none :title='title'></header-none>
+			<div class="mui-content">
+				<ul class="mui-table-view mui-table-view-chevron">
+					<li class="mui-table-view-cell mui-media common" id="id">
+						<a class="mui-navigate-right" href="#account">
+							<img class="lazy mui-media-object mui-pull-left head-img" :src="user.avatar_url">
+							<div class="mui-media-body">
+								<div id="name">{{user.loginname}}</div>
+								<p class='mui-ellipsis'>账号:{{user.githubUsername}}</p>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
 		</div>
 
 		<script type="text/javascript" src="../../js/vue.js"></script>

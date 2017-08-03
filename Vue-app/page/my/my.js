@@ -1,6 +1,7 @@
 var my = new Vue({
 	el: '#App',
 	data: {
+		title:'我的',
 		user:{
 			loginname:'请登录',
 			githubUsername:'',

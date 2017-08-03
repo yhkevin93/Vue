@@ -11,7 +11,7 @@ var index = new Vue({
 		}
 	},
 	mounted: function() {
-
+        kv.beginScroll()
 	},
 	created: function() {
 
