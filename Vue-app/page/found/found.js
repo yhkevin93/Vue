@@ -25,6 +25,7 @@ var found = new Vue({
 			kv.openWindow('article/article.html',{
 				articleid:id
 			})
-		}
+		},
+		
 	}
 })

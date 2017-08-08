@@ -131,4 +131,35 @@ var kv = (function(mui) {
 		k.log('打开页面：' + url)
 	}
 
-}(kv, mui))
+}(kv, mui));
+
+/*----------------------本地数据存取------------------------------------*/
+(function(k, p) {
+
+	k.setItem = function(key, value) {
+		p.storage.setItem(key, value);
+	}
+
+	k.getItem = function(key) {
+		p.storage.getItem(key)
+	}
+
+}(kv, plus));
+
+/*----------------------跨页自定义事件触发---------------------------------*/
+(function(k, m) {
+
+	k.fire = function(detailPageId, eventName, extra) {
+		
+		var detailPage = plus.webview.getWebviewById(detailPageId)
+		
+		m.fire(detailPage, eventName, extra);
+	}
+
+	k.addEvent = function(eventName, cb) {
+		window.addEventListener(eventName, function(event) {
+			cb(event)
+		});
+	}
+
+}(kv, mui));

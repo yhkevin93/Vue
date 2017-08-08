@@ -27,5 +27,5 @@ Vue.component('scroll', {
 	 <slot></slot>\
 	</div>\
 	</div>\
-	'
+	' 
 })
