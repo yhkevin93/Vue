@@ -1,95 +1,95 @@
- var App = new Vue({
- 	el: '#App',
- 	data: {
- 		title: '首页',
- 		activeTab: 'index',
- 		tabBar: [{
- 			active: 'mui-active mui-tab-item',
- 			id: "index",
- 			icon: "mui-icon mui-icon-home",
- 			title: "首页",
- 			style: {
- 				top: '0px',
- 				bottom: '51px',
- 				titleNView: {
- 					'backgroundColor': '#f7f7f7', //导航栏背景色
- 					'titleText': '首页', //导航栏标题
- 					'titleColor': '#000000', //文字颜色
- 					type: 'transparent', //透明渐变样式
- 					splitLine: { //底部分割线
- 						color: '#cccccc'
- 					}
- 				}
- 			},
- 		}, {
- 			"id": "found",
- 			"icon": "mui-icon mui-icon-location",
- 			"title": "发现",
- 			style: {
- 				top: '0', //mui标题栏默认高度为45px；
- 				bottom: '51px', //默认为0px，可不定义；
- 				statusbar: {
- 					background: '#f7f7f7'
- 				},
- 			}
- 		}, {
- 			"id": "my",
- 			"icon": "mui-icon mui-icon-person",
- 			"title": "我的",
- 			style: {
- 				top: '0', //mui标题栏默认高度为45px；
- 				bottom: '51px', //默认为0px，可不定义；
- 				statusbar: {
- 					background: '#f7f7f7'
- 				},
- 			}
- 		}]
- 	},
- 	methods: {
- 		//页面跳转
- 		changeView: function changeView(targetTab, title, style) {
+  var App = new Vue({
+  	el: '#App',
+  	data: {
+  		title: '首页',
+  		activeTab: 'new_page',
+  		style: {
+  			top: '0px',
+  			bottom: '51px',
+  		},
+  		tabBar: [{
+  				active: 'mui-active mui-tab-item',
+  				id: "new_page",
+  				icon: "mui-icon mui-icon-paperplane",
+  				title: "静态页面",
+  				style: { //预留一个，如果顶部通透真机打包状态栏还是不和标题栏一个颜色，则还是每个页面分开别style，单独设置状态栏颜色
+  					top: '0px',
+  					bottom: '51px',
+  					statusbar: {
+  						background: '#f7f7f7'
+  					},
+  				},
+  			},
+  			{
+  				"id": "scroll_new_page",
+  				"icon": "mui-icon mui-icon-spinner mui-spin",
+  				"title": "滚动页面"
+  			},
+  			{
+  				"id": "refresh_new_page",
+  				"icon": "mui-icon mui-icon-refresh",
+  				"title": "下拉刷新"
+  			},
+  			{
+  				"id": "my",
+  				"icon": "mui-icon mui-icon-person",
+  				"title": "我的"
+  			}
+  		]
+  	},
+  	methods: {
+  		//页面跳转
+  		changeView: function changeView(targetTab, title, style) {
 
- 			if(targetTab == App.activeTab) return;
+  			if(targetTab == App.activeTab) return;
 
- 			var url = '../' + targetTab + '/' + targetTab + '.html'
+  			var url = '../' + targetTab + '/' + targetTab + '.html'
 
- 			var id = targetTab
+  			var id = targetTab
 
- 			App.title = title;
+  			App.title = title;
 
- 			App.activeTab = targetTab;
+  			App.activeTab = targetTab;
 
- 			mui.openWindow({
- 				url: url,
- 				id: id,
- 				show: {
- 					aniShow: 'none',
- 				},
- 				styles: style,
- 				waiting: {
- 					autoShow: false
- 				},
- 			})
+  			mui.openWindow({
+  				url: url,
+  				id: id,
+  				show: {
+  					aniShow: 'none',
+  				},
+  				styles: this.style,
+  				waiting: {
+  					autoShow: false
+  				},
+  			})
 
- 			kv.log('打开页面:' + title)
+  			kv.log('打开页面:' + title)
 
- 		}
- 	},
- 	mounted: function() {
- 		kv.init()
- 	
- 		mui.openWindow({
- 			url: '../index/index.html',
- 			id: 'index',
- 			show: {
- 				aniShow: 'none',
- 			},
- 			styles: this.tabBar[0].style,
- 			waiting: {
- 				autoShow: false
- 			},
- 		})
+  		}
+  	},
+  	mounted: function() {
+  		kv.init()
 
- 	},
+  		if(plus.navigator.isImmersedStatusbar()) { // 兼容immersed状态栏模式
+  			// 获取状态栏高度并根据业务需求处理，这里重新计算了子窗口的偏移位置
+  			this.style.top = plus.navigator.getStatusbarHeight();
+  		}
+  		
+  		var url = '../' + this.activeTab + '/' + this.activeTab + '.html'
 
- })
+  		//载入首页
+  		mui.openWindow({
+  			url: url,
+  			id: 'index',
+  			show: {
+  				aniShow: 'none',
+  			},
+  			styles: this.style,
+  			waiting: {
+  				autoShow: false
+  			},
+  		})
+
+  	},
+
+  })

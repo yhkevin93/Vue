@@ -7,25 +7,48 @@
  * kv方法封装
  * 2017年8月1日11:00:07
  */
+//APP配置参数
+app_config = {
+	//基础配置
+	defaults: {
+		mode: 'development', //开发模式：'development',产品模式:'production';
+	},
+	//网络环境配置
+	networkData: {
+		ip: 'https://cnodejs.org/api/v1', //网络请求域名地址
+	},
+	//页面滚动配置
+	scrollConfig: {
+		container: '#scroll' //滚动区域id
+	},
+	//页面样式配置
+	pageStyles: {
+		popGesture: 'close',
+		statusbar: {
+			background: '#f7f7f7' //状态栏颜色
+		},
+		scrollIndicator: 'none',
+	}
+}
 
 /*----------------kv基础（调用mui)----------------*/
 var kv = (function(mui) {
 
 	defaults = {
-		mode: 'development', //开发模式：'development',产品模式:'production';
 		step: 1, //步奏
 	}
 
 	var k = {};
 
 	k.init = function() {
-		k.log('当前开发模式:' + defaults.mode);
+		k.log('当前开发模式:' + app_config.defaults.mode);
 	}
 
 	//输出，开发模式会执行输出，产品模式会隐藏输出
 	k.log = function(log) {
-		var pageid = plus.webview.currentWebview().id
-		if(defaults.mode == 'development') {
+
+		if(app_config.defaults.mode == 'development') {
+			var pageid = plus.webview.currentWebview().id
 			console.log(pageid + ':' + defaults.step + '.' + log);
 			defaults.step++;
 		}
@@ -37,13 +60,11 @@ var kv = (function(mui) {
 /*--------------------网络请求--------------------*/
 (function(k, mui) {
 
-	networkData = {
-		ip: 'https://cnodejs.org/api/v1',
-	}
-
 	k.ajaxData = function(data, url, way, success, error) {
 
-		var theurl = networkData.ip + url
+		var theurl = app_config.networkData.ip + url
+
+		k.log('请求地址:'+theurl)
 
 		mui.ajax(theurl, {
 			data: data,
@@ -55,7 +76,7 @@ var kv = (function(mui) {
 				success(data);
 			},
 			error: function(xhr, type, errorThrown) {
-				k.log('链接错误类型：' + type + '链接错误地址：' + ip + url)
+				k.log('链接错误类型：' + type + '链接错误地址：' + app_config.networkData.ip + url)
 				mui.toast('网络链接失败，请检查你的网络')
 				if(error) {
 					error()
@@ -69,9 +90,6 @@ var kv = (function(mui) {
 
 (function(k, mui) {
 
-	config = {
-		container: '#scroll'
-	}
 	k.beginScroll = function() {
 		mui('.mui-scroll-wrapper').scroll({
 			deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
@@ -82,7 +100,7 @@ var kv = (function(mui) {
 	k.pullRefresh = function(ref) {
 		mui.init({
 			pullRefresh: {
-				container: config.container, //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
+				container: app_config.scrollConfig.container, //下拉刷新容器标识，querySelector能定位的css选择器均可，比如：id、.class等
 				down: {
 					height: 50, //可选,默认50.触发下拉刷新拖动距离,
 					auto: true, //可选,默认false.首次加载自动下拉刷新一次
@@ -98,7 +116,7 @@ var kv = (function(mui) {
 
 	k.endRefresh = function() {
 		setTimeout(function() {
-			mui(config.container).pullRefresh().endPulldownToRefresh();
+			mui(app_config.scrollConfig.container).pullRefresh().endPulldownToRefresh();
 		}, 250)
 	}
 
@@ -106,14 +124,6 @@ var kv = (function(mui) {
 
 /*---------------------------页面管理----------------------------*/
 (function(k, mui) {
-	styles = {
-		popGesture: 'close',
-		statusbar: {
-			//状态栏颜色
-			background: '#f7f7f7'
-		},
-		scrollIndicator: 'none',
-	}
 
 	k.openWindow = function(url, extras) {
 		mui.openWindow({
@@ -124,7 +134,7 @@ var kv = (function(mui) {
 			waiting: {
 				autoShow: false
 			},
-			styles: styles,
+			styles: app_config.pageStyles,
 
 		})
 
@@ -141,7 +151,7 @@ var kv = (function(mui) {
 	}
 
 	k.getItem = function(key) {
-		p.storage.getItem(key)
+		return p.storage.getItem(key)
 	}
 
 }(kv, plus));
@@ -150,9 +160,9 @@ var kv = (function(mui) {
 (function(k, m) {
 
 	k.fire = function(detailPageId, eventName, extra) {
-		
+
 		var detailPage = plus.webview.getWebviewById(detailPageId)
-		
+
 		m.fire(detailPage, eventName, extra);
 	}
 

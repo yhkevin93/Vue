@@ -2,7 +2,7 @@ var new_page = new Vue({
 	el: '#App',
 	data: {
 		//页面属性
-		title:'页面'
+		title:'静态页面'
 	},
 	mounted: function() {
 		//生命周期mounted,页面渲染后执行的方法
