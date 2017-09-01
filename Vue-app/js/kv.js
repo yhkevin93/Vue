@@ -16,6 +16,9 @@ app_config = {
 	//网络环境配置
 	networkData: {
 		ip: 'https://cnodejs.org/api/v1', //网络请求域名地址
+		header:{
+			'api-key': 'xYpdwuqq9rTual=WUIoLv=ARCsg='
+		}
 	},
 	//页面滚动配置
 	scrollConfig: {
@@ -27,7 +30,15 @@ app_config = {
 		statusbar: {
 			background: '#f7f7f7' //状态栏颜色
 		},
-		scrollIndicator: 'none',
+		//		scrollIndicator: 'none',
+	},
+	//地图配置
+	map: {
+		//坐标：默认成都
+		point: {
+			lng: 104.06,
+			lat: 30.67,
+		}
 	}
 }
 
@@ -60,11 +71,11 @@ var kv = (function(mui) {
 /*--------------------网络请求--------------------*/
 (function(k, mui) {
 
-	k.ajaxData = function(data, url, way, success, error) {
+	k.ajaxData = function(url, data, way, success, error) {
 
 		var theurl = app_config.networkData.ip + url
 
-		k.log('请求地址:'+theurl)
+		k.log('请求地址:' + theurl)
 
 		mui.ajax(theurl, {
 			data: data,
@@ -84,6 +95,32 @@ var kv = (function(mui) {
 			}
 		})
 	}
+	//带header
+	k.ajaxDataWithHeader = function(url, data,way, success, error) {
+		var theurl = url
+
+		k.log('请求地址:' + theurl)
+
+		mui.ajax(theurl, {
+			data: data,
+			dataType: 'json',
+			headers:app_config.networkData.header,
+			type: way,
+			timeout: 10000,
+			success: function(data) {
+				k.log(url + '请求成功')
+				success(data);
+			},
+			error: function(xhr, type, errorThrown) {
+				k.log('链接错误类型：' + type + '链接错误地址：' + app_config.networkData.ip + url)
+				mui.toast('网络链接失败，请检查你的网络')
+				if(error) {
+					error()
+				}
+			}
+		})
+	}
+
 }(kv, mui));
 
 /*---------------------上拉加载，下拉刷新，滚动区域------------------*/
@@ -141,20 +178,31 @@ var kv = (function(mui) {
 		k.log('打开页面：' + url)
 	}
 
+	k.showWaiting = function(text) {
+		var showText = text ? text : '等待中...'
+		plus.nativeUI.showWaiting(showText, {
+			modal: false
+		});
+	}
+
+	k.closeWaiting = function() {
+		plus.nativeUI.closeWaiting()
+	}
+
 }(kv, mui));
 
 /*----------------------本地数据存取------------------------------------*/
-(function(k, p) {
+(function(k) {
 
 	k.setItem = function(key, value) {
-		p.storage.setItem(key, value);
+		plus.storage.setItem(key, value);
 	}
 
 	k.getItem = function(key) {
-		return p.storage.getItem(key)
+		return plus.storage.getItem(key)
 	}
 
-}(kv, plus));
+}(kv));
 
 /*----------------------跨页自定义事件触发---------------------------------*/
 (function(k, m) {
@@ -163,13 +211,46 @@ var kv = (function(mui) {
 
 		var detailPage = plus.webview.getWebviewById(detailPageId)
 
+		k.log('给' + detailPageId + '绑定' + eventName + '事件')
+
 		m.fire(detailPage, eventName, extra);
 	}
 
 	k.addEvent = function(eventName, cb) {
 		window.addEventListener(eventName, function(event) {
-			cb(event)
+			cb(event.detail)
 		});
 	}
 
+}(kv, mui));
+
+/*------------------------地图类---------------------------------*/
+(function(k, m) {
+	k.setMap = function(id) {
+		var mapExa = new plus.maps.Map(id);
+		mapExa.centerAndZoom(new plus.maps.Point(app_config.map.point.lng, app_config.map.point.lat), 14);
+		return mapExa;
+	}
+
+	/*
+	 data:传入的数组数据，
+	 map:地图对象
+	 cb(current,marker):回调方法，current：当前数据对象，marker：当前标签对象
+	 click:标签按键方法
+	 * */
+	/**
+	 * mui fixed classList
+	 * @data {type} document
+	 * @map {undefined}
+	 */
+	k.addMapMarker = function(data, map, cb, click) {
+		for(id in data) {
+			var current = data[id];
+			var marker = new plus.maps.Marker(new plus.maps.Point(current.lng, current.lat));
+			cb(current, marker);
+			marker.onclick = click
+			marker.setLabel(current.name);
+			map.addOverlay(marker);
+		}
+	}
 }(kv, mui));
