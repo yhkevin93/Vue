@@ -15,9 +15,10 @@ app_config = {
 	},
 	//网络环境配置
 	networkData: {
-		ip: 'https://cnodejs.org/api/v1', //网络请求域名地址
-		header:{
-			'api-key': 'xYpdwuqq9rTual=WUIoLv=ARCsg='
+		ip: '--', //网络请求域名地址
+		header: {
+			'Content-Type': 'application/json',
+			'api-key': '--'
 		}
 	},
 	//页面滚动配置
@@ -96,15 +97,15 @@ var kv = (function(mui) {
 		})
 	}
 	//带header
-	k.ajaxDataWithHeader = function(url, data,way, success, error) {
+	k.ajaxDataWithHeader = function(url, newdata, way, success, error) {
 		var theurl = url
 
 		k.log('请求地址:' + theurl)
 
 		mui.ajax(theurl, {
-			data: data,
+			data: newdata,
 			dataType: 'json',
-			headers:app_config.networkData.header,
+			headers: app_config.networkData.header,
 			type: way,
 			timeout: 10000,
 			success: function(data) {
@@ -112,7 +113,7 @@ var kv = (function(mui) {
 				success(data);
 			},
 			error: function(xhr, type, errorThrown) {
-				k.log('链接错误类型：' + type + '链接错误地址：' + app_config.networkData.ip + url)
+				//	k.log('链接错误类型：' + type + '链接错误地址：' + app_config.networkData.ip + url)
 				mui.toast('网络链接失败，请检查你的网络')
 				if(error) {
 					error()
@@ -132,7 +133,7 @@ var kv = (function(mui) {
 			deceleration: 0.0005, //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
 			indicators: false,
 		});
-	}
+	};
 
 	k.pullRefresh = function(ref) {
 		mui.init({
@@ -149,13 +150,13 @@ var kv = (function(mui) {
 			}
 		});
 
-	}
+	};
 
 	k.endRefresh = function() {
 		setTimeout(function() {
 			mui(app_config.scrollConfig.container).pullRefresh().endPulldownToRefresh();
 		}, 250)
-	}
+	};
 
 }(kv, mui));
 
@@ -176,18 +177,18 @@ var kv = (function(mui) {
 		})
 
 		k.log('打开页面：' + url)
-	}
+	};
 
 	k.showWaiting = function(text) {
 		var showText = text ? text : '等待中...'
 		plus.nativeUI.showWaiting(showText, {
 			modal: false
 		});
-	}
+	};
 
 	k.closeWaiting = function() {
 		plus.nativeUI.closeWaiting()
-	}
+	};
 
 }(kv, mui));
 
@@ -196,11 +197,11 @@ var kv = (function(mui) {
 
 	k.setItem = function(key, value) {
 		plus.storage.setItem(key, value);
-	}
+	};
 
 	k.getItem = function(key) {
 		return plus.storage.getItem(key)
-	}
+	};
 
 }(kv));
 
@@ -214,13 +215,13 @@ var kv = (function(mui) {
 		k.log('给' + detailPageId + '绑定' + eventName + '事件')
 
 		m.fire(detailPage, eventName, extra);
-	}
+	};
 
 	k.addEvent = function(eventName, cb) {
 		window.addEventListener(eventName, function(event) {
 			cb(event.detail)
 		});
-	}
+	};
 
 }(kv, mui));
 
@@ -230,7 +231,7 @@ var kv = (function(mui) {
 		var mapExa = new plus.maps.Map(id);
 		mapExa.centerAndZoom(new plus.maps.Point(app_config.map.point.lng, app_config.map.point.lat), 14);
 		return mapExa;
-	}
+	};
 
 	/*
 	 data:传入的数组数据，
@@ -246,11 +247,45 @@ var kv = (function(mui) {
 	k.addMapMarker = function(data, map, cb, click) {
 		for(id in data) {
 			var current = data[id];
-			var marker = new plus.maps.Marker(new plus.maps.Point(current.lng, current.lat));
+			var marker = new plus.maps.Marker(new plus.maps.Point(current.location.lon, current.location.lat));
 			cb(current, marker);
-			marker.onclick = click
-			marker.setLabel(current.name);
+			marker.onclick = click;
+			marker.setLabel(current.title);
+			marker.current = current;
 			map.addOverlay(marker);
 		}
-	}
+	};
+}(kv, mui));
+
+/*----------------------------------通讯类----------------------------------------------*/
+
+(function(k, m) {
+	k.call = function(phoneNumber) {
+		k.log('拨打:' + phoneNumber);
+		plus.device.dial(phoneNumber, true);
+	};
+}(kv, mui));
+
+/*---------------------------------支付类----------------------------------------------*/
+
+(function(k, m) {
+	//支付初始化，生成订单渠道
+	k.getChannels = function(channels) {
+
+		plus.payment.getChannels(function(s) {
+			channels(s);
+		}, function(e) {
+			alert("获取支付通道列表失败：" + e.message);
+		});
+
+	};
+
+	//支付
+	k.pay = function(channel, detail, paysuccess, payfail) {
+		plus.payment.request(channel, detail, function() {
+			paysuccess()
+		}, function() {
+			payfail()
+		});
+	};
 }(kv, mui));

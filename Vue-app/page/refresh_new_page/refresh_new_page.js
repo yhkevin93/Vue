@@ -12,12 +12,7 @@ var found = new Vue({
 	},
 	mounted: function() {
 		//开始下拉刷新（刷新方法）
-		mui.plusReady(function() {
-
 			kv.pullRefresh(this.get_news)
-
-		})
-
 	},
 	created: function() {
 
