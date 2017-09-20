@@ -68,26 +68,29 @@
   		}
   	},
   	mounted: function() {
-  		kv.init()
 
-  		if(plus.navigator.isImmersedStatusbar()) { // 兼容immersed状态栏模式
-  			// 获取状态栏高度并根据业务需求处理，这里重新计算了子窗口的偏移位置
-  			this.style.top = plus.navigator.getStatusbarHeight();
-  		}
-  		
-  		var url = '../' + this.activeTab + '/' + this.activeTab + '.html'
+  		mui.plusReady(function() {
+  			kv.init()
 
-  		//载入首页
-  		mui.openWindow({
-  			url: url,
-  			id: 'index',
-  			show: {
-  				aniShow: 'none',
-  			},
-  			styles: this.style,
-  			waiting: {
-  				autoShow: false
-  			},
+  			if(plus.navigator.isImmersedStatusbar()) { // 兼容immersed状态栏模式
+  				// 获取状态栏高度并根据业务需求处理，这里重新计算了子窗口的偏移位置
+  				//			this.style.top = plus.navigator.getStatusbarHeight();
+  			}
+
+  			var url = '../' + App.activeTab + '/' + App.activeTab + '.html'
+
+  			//载入首页
+  			mui.openWindow({
+  				url: url,
+  				id: App.activeTab,
+  				show: {
+  					aniShow: 'none',
+  				},
+  				styles: App.style,
+  				waiting: {
+  					autoShow: false
+  				},
+  			})
   		})
 
   	},

@@ -1,1 +1,43 @@
-null
+{
+	"page/my/my.html": {
+		"resources": [
+			"page/my/my.js",
+			"page/my/my.css",
+			"img/logo.jpg"
+		]
+	},
+	"page/refresh_new_page/refresh_new_page.html": {
+		"resources": [
+			"page/refresh_new_page/refresh_new_page.js"
+		]
+	},
+	"page/webview/webview.html": {
+		"resources": [
+			"templete/common.js",
+			"js/vue.js",
+			"js/mui.min.js",
+			"page/webview/webview.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"js/kv.js",
+			"page/webview/webview.css"
+		],
+		"refer": [
+			"page/my/my.html",
+			"page/refresh_new_page/refresh_new_page.html",
+			"page/new_page/new_page.html",
+			"page/scroll_new_page/scroll_new_page.html"
+		]
+	},
+	"page/new_page/new_page.html": {
+		"resources": [
+			"css/mui.css",
+			"page/new_page/new_page.js"
+		]
+	},
+	"page/scroll_new_page/scroll_new_page.html": {
+		"resources": [
+			"page/scroll_new_page/scroll_new_page.js"
+		]
+	}
+}

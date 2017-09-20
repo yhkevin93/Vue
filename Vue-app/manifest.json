@@ -224,5 +224,73 @@
 				}
 			}
 		}
+	},
+	"dependencies": {
+		"pages": {
+			"page/my/my.html": {
+				"resources": [
+					"page/my/my.js",
+					"page/my/my.css",
+					"img/logo.jpg"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"page/refresh_new_page/refresh_new_page.html": {
+				"resources": [
+					"page/refresh_new_page/refresh_new_page.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"page/webview/webview.html": {
+				"resources": [
+					"templete/common.js",
+					"js/vue.js",
+					"js/mui.min.js",
+					"page/webview/webview.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css",
+					"js/kv.js",
+					"page/webview/webview.css"
+				],
+				"refer": [
+					"page/my/my.html",
+					"page/refresh_new_page/refresh_new_page.html",
+					"page/new_page/new_page.html",
+					"page/scroll_new_page/scroll_new_page.html"
+				],
+				"priority": 0
+			},
+			"page/new_page/new_page.html": {
+				"resources": [
+					"css/mui.css",
+					"page/new_page/new_page.js"
+				],
+				"refer": [],
+				"priority": 0
+			},
+			"page/scroll_new_page/scroll_new_page.html": {
+				"resources": [
+					"page/scroll_new_page/scroll_new_page.js"
+				],
+				"refer": [],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"img/account_icon_tact@3x.png",
+				"img/account_icon_mes@3x.png",
+				"js/mui.js",
+				"img/account_icon_baogao@3x.png",
+				"img/3.jpg",
+				"img/ad1.png",
+				"img/oilcar.png",
+				"img/spinner.gif",
+				"img/loading-icon-2386.gif",
+				"img/19903006.jpg"
+			]
+		}
 	}
 }
