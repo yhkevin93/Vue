@@ -15,10 +15,10 @@ app_config = {
 	},
 	//网络环境配置
 	networkData: {
-		ip: '--', //网络请求域名地址
+		ip: 'https://cnodejs.org/api/v1', //网络请求域名地址
 		header: {
 			'Content-Type': 'application/json',
-			'api-key': '--'
+			'api-key': 'zlbf7ZwLetP=TDP=IC7p0JOE740='
 		}
 	},
 	//页面滚动配置
@@ -179,6 +179,22 @@ var kv = (function(mui) {
 		k.log('打开页面：' + url)
 	};
 
+	//结合框架的新打开窗口，直接输入id就跳转
+	k.newWindow = function(id, extras) {
+		var url = '../' + id + '/' + id + '.html';
+		mui.openWindow({
+			url: url,
+			id: url,
+			extras: extras,
+			createNew: true,
+			waiting: {
+				autoShow: false
+			},
+			styles: app_config.pageStyles,
+
+		})
+	}
+
 	k.showWaiting = function(text) {
 		var showText = text ? text : '等待中...'
 		plus.nativeUI.showWaiting(showText, {
@@ -227,9 +243,18 @@ var kv = (function(mui) {
 
 /*------------------------地图类---------------------------------*/
 (function(k, m) {
-	k.setMap = function(id) {
+	k.setMap = function(id, mapPoint) {
 		var mapExa = new plus.maps.Map(id);
-		mapExa.centerAndZoom(new plus.maps.Point(app_config.map.point.lng, app_config.map.point.lat), 14);
+
+		if(!mapPoint) {
+			k.log('没有坐标，默认成都');
+			mapExa.centerAndZoom(new plus.maps.Point(app_config.map.point.lng, app_config.map.point.lat), 14);
+		} else {
+			k.log('地图定位为用户当前位置');
+			mapExa.centerAndZoom(mapPoint, 14);
+
+		}
+
 		return mapExa;
 	};
 
@@ -251,6 +276,7 @@ var kv = (function(mui) {
 			cb(current, marker);
 			marker.onclick = click;
 			marker.setLabel(current.title);
+			//current是自己添加我属性，用于添加额外想要的数据
 			marker.current = current;
 			map.addOverlay(marker);
 		}
