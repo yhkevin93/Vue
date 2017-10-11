@@ -1,0 +1,26 @@
+/*列表切换数据动画滚动*/
+.flip-list-move {
+	transition: transform 1s;
+}
+
+
+/*不点击列表无点击效果*/
+
+.mui-table-view-cell.mui-active {
+	background-color: white;
+}
+
+/*左边有小图片列表*/
+.mui-navigate-right img {
+	width: 20px;
+	height: 20px;
+	margin-right: 15px;
+	float: left;
+}
+
+.mui-navigate-right>p {
+	float: left;
+	line-height: 20px;
+	font-size: 16px;
+	color: #000000;
+}
