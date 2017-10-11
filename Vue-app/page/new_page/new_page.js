@@ -2,7 +2,7 @@ var new_page = new Vue({
 	el: '#App',
 	data: {
 		//页面属性
-		title:'静态页面'
+		title: '静态页面'
 	},
 	mounted: function() {
 		//生命周期mounted,页面渲染后执行的方法
@@ -19,5 +19,10 @@ var new_page = new Vue({
 	},
 	methods: {
 		//页面方法
+
+		//打开窗口，直接填写目标地址id名就好
+		openWindow: function(id) {
+			kv.newWindow(id);
+		}
 	},
 })

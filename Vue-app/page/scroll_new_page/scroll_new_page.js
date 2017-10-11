@@ -20,6 +20,9 @@ var found = new Vue({
 
 	},
 	methods: {
-
+		//打开窗口，直接填写目标地址id名就好
+		openWindow: function(id) {
+			kv.newWindow(id);
+		}
 	}
 })

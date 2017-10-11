@@ -18,6 +18,7 @@ var found = new Vue({
 
 	},
 	methods: {
+		
 		//下拉刷新事件(获取数据)
 		get_news: function() {
 			kv.ajaxData({
@@ -34,5 +35,10 @@ var found = new Vue({
 				articleid: id
 			})
 		},
+		//打开窗口，直接填写目标地址id名就好
+		openWindow: function(id) {
+			kv.newWindow(id);
+		}
+		
 	}
 })
